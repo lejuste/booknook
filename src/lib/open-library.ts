@@ -61,6 +61,52 @@ export async function fetchAuthor(authorId: string): Promise<OLAuthor> {
   return fetchJson<OLAuthor>(`${OL_BASE}${key}.json`);
 }
 
+/** Search result from Open Library Search API */
+export interface OLSearchDoc {
+  key: string;
+  title: string;
+  author_name?: string[];
+  cover_i?: number;
+  edition_count?: number;
+  first_publish_year?: number;
+  editions?: {
+    numFound: number;
+    docs: Array<{ key: string; number_of_pages?: number }>;
+  };
+}
+
+export interface OLSearchResponse {
+  numFound: number;
+  start: number;
+  numFoundExact: boolean;
+  docs: OLSearchDoc[];
+}
+
+/**
+ * Search Open Library for books.
+ * @see https://openlibrary.org/dev/docs/api/search
+ */
+export async function searchOpenLibrary(
+  query: string,
+  options?: { page?: number; limit?: number }
+): Promise<OLSearchResponse> {
+  const page = options?.page ?? 1;
+  const limit = options?.limit ?? 10;
+  const params = new URLSearchParams({
+    q: query,
+    page: String(page),
+    limit: String(limit),
+    fields: "key,title,author_name,cover_i,editions,editions.key,editions.number_of_pages",
+  });
+  const url = `${OL_BASE}/search.json?${params}`;
+  return fetchJson<OLSearchResponse>(url);
+}
+
+/** Get cover URL from cover ID (from search) or olid */
+export function getCoverUrlFromId(coverId: number, size: "S" | "M" | "L" = "M"): string {
+  return `${COVERS_BASE}/b/id/${coverId}-${size}.jpg`;
+}
+
 /** Parse page count from pagination string like "1137p." or "512" */
 function parsePageCount(edition: OLEdition): number {
   if (edition.number_of_pages) return edition.number_of_pages;

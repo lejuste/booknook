@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import Link from "next/link";
 import { BookCard } from "@/components/book-card";
 import { NavDrawer } from "@/components/nav-drawer";
+import { AddBookButton } from "@/components/add-book-button";
 
 export default async function Home() {
   const supabase = await createClient();
@@ -72,14 +73,20 @@ export default async function Home() {
             Sign in to view your library.
           </p>
         ) : inProgress.length === 0 ? ( // no books in library
-          <p className="py-12 text-center text-stone-500">
-            Your library is empty. Add books to get started.
-          </p>
+          <div className="py-12 text-center">
+            <p className="mb-4 text-stone-500">
+              Your library is empty. Add books to get started.
+            </p>
+            <AddBookButton />
+          </div>
         ) : ( // books in library
           <section>
-            <h2 className="mb-4 text-xs font-semibold uppercase tracking-wider text-stone-600">
-              In Progress
-            </h2>
+            <div className="mb-4 flex items-center justify-between gap-4">
+              <h2 className="text-xs font-semibold uppercase tracking-wider text-stone-600">
+                In Progress
+              </h2>
+              <AddBookButton />
+            </div>
             <ul className="flex flex-col gap-4" role="list">
               {inProgress.map((book) => (
                 <li key={book.id}>
