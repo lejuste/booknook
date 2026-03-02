@@ -80,9 +80,7 @@ Run the app against your hosted Supabase project.
 | `npm run supabase:stop` | Stop local Supabase |
 | `npm run supabase:db:diff` | Generate migration from schema diff |
 | `npm run supabase:db:push` | Push migrations to remote |
-| `npm run seed:test-users` | Create test user for integration tests |
-| `npm run seed:library` | Seed sample library books (current reads) |
-| `npm run seed:past-reads` | Seed Scythe & Bible as completed books + profile demo data |
+| `npm run seed` | Seed test users, library, past reads & profile (for dev & tests) |
 | `npm run test` | Run auth integration tests (Playwright) |
 | `npm run test:ui` | Run tests with Playwright UI |
 
@@ -90,13 +88,13 @@ Run the app against your hosted Supabase project.
 
 Integration tests cover login, sign out, and invalid credentials. They use a seeded test user (no email required).
 
-1. **Seed the test user** (one-time, requires `SUPABASE_SERVICE_ROLE_KEY` in `.env.local`):
+1. **Seed the database** (one-time, requires `SUPABASE_SERVICE_ROLE_KEY` in `.env.local`):
 
    ```bash
-   npm run seed:test-users
+   npm run seed
    ```
 
-   This creates `a@test.com` and `b@test.com` (password: `Welcome1!`) via the Admin API. Tests run the seed automatically via globalSetup.
+   This creates test users `a@test.com` and `b@test.com` (password: `Welcome1!`), library books, and past reads. Tests run the seed automatically via globalSetup.
 
 2. **Install Playwright browsers** (one-time):
 
@@ -114,22 +112,10 @@ Integration tests cover login, sign out, and invalid credentials. They use a see
 
 ## Seeding data
 
-1. **Test users** (required for tests and seed scripts):
+Run a single command to seed test users, library books, past reads, and profile demo data:
 
-   ```bash
-   npm run seed:test-users
-   ```
+```bash
+npm run seed
+```
 
-2. **Library books** (sample current reads):
-
-   ```bash
-   npm run seed:library
-   ```
-
-3. **Past read books** (Scythe, The Holy Bible) + profile demo:
-
-   ```bash
-   npm run seed:past-reads
-   ```
-
-   Requires the `status` column on `library_entries` and `tagline` on `profiles`. If using **local** Supabase, run `supabase db reset` after adding new migrations. If using **remote**, run `npm run supabase:db:push`.
+Requires the `status` column on `library_entries` and `tagline` on `profiles`. If using **local** Supabase, run `supabase db reset` after adding new migrations. If using **remote**, run `npm run supabase:db:push`.
