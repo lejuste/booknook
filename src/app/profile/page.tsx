@@ -25,7 +25,9 @@ export default async function ProfilePage() {
     .order("updated_at", { ascending: false });
 
   const booksRead = libraryEntries?.filter((e) => e.status === "completed").length ?? 0;
-  const recentBooks = (libraryEntries ?? []).slice(0, 6);
+  const entries = libraryEntries ?? [];
+  const recentInProgress = entries.filter((e) => e.status !== "completed").slice(0, 6);
+  const recentCompleted = entries.filter((e) => e.status === "completed").slice(0, 6);
 
   return (
     <main className="min-h-screen bg-stone-50/95">
@@ -80,10 +82,8 @@ export default async function ProfilePage() {
           <h3 className="mb-4 text-xs font-semibold uppercase tracking-wider text-stone-600">
             Reading Stats
           </h3>
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+          <div className="grid grid-cols-2 gap-4">
             <StatCard icon="📖" label="Books Read" value={String(booksRead)} />
-            <StatCard icon="💬" label="Total Notes" value="0" />
-            <StatCard icon="🎤" label="Voice Notes" value="0" />
             <StatCard icon="📅" label="Days Streak" value="0" />
           </div>
         </section>
@@ -122,33 +122,67 @@ export default async function ProfilePage() {
         </section>
 
         {/* Recent books */}
-        <section>
-          <h3 className="mb-4 text-xs font-semibold uppercase tracking-wider text-stone-600">
+        <section className="flex flex-col gap-8">
+          <h3 className="text-xs font-semibold uppercase tracking-wider text-stone-600">
             Recent Books
           </h3>
-          {recentBooks.length === 0 ? (
+          {recentInProgress.length === 0 && recentCompleted.length === 0 ? (
             <div className="rounded-2xl bg-white p-8 text-center text-stone-500 shadow-sm">
               No books yet. Add books to your library to see them here.
             </div>
           ) : (
-            <ul className="flex flex-col gap-4" role="list">
-              {recentBooks.map((book) => (
-                <li key={book.id}>
-                  <div className="rounded-2xl bg-white p-4 shadow-sm">
-                    <BookCard
-                      title={book.title}
-                      author={book.author}
-                      coverUrl={book.cover_url ?? ""}
-                      totalPages={book.total_pages ?? 0}
-                      pagesRead={book.pages_read ?? 0}
-                      friendsReading={book.friends_reading ?? 0}
-                      openLibraryUrl={book.open_library_url}
-                      status={book.status}
-                    />
-                  </div>
-                </li>
-              ))}
-            </ul>
+            <>
+              {recentInProgress.length > 0 && (
+                <div>
+                  <h4 className="mb-4 text-xs font-medium uppercase tracking-wider text-stone-500">
+                    In Progress
+                  </h4>
+                  <ul className="flex flex-col gap-4" role="list">
+                    {recentInProgress.map((book) => (
+                      <li key={book.id}>
+                        <div className="rounded-2xl bg-white p-4 shadow-sm">
+                          <BookCard
+                            title={book.title}
+                            author={book.author}
+                            coverUrl={book.cover_url ?? ""}
+                            totalPages={book.total_pages ?? 0}
+                            pagesRead={book.pages_read ?? 0}
+                            friendsReading={book.friends_reading ?? 0}
+                            openLibraryUrl={book.open_library_url}
+                            status={book.status}
+                          />
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              {recentCompleted.length > 0 && (
+                <div>
+                  <h4 className="mb-4 text-xs font-medium uppercase tracking-wider text-stone-500">
+                    Completed
+                  </h4>
+                  <ul className="flex flex-col gap-4" role="list">
+                    {recentCompleted.map((book) => (
+                      <li key={book.id}>
+                        <div className="rounded-2xl bg-white p-4 shadow-sm">
+                          <BookCard
+                            title={book.title}
+                            author={book.author}
+                            coverUrl={book.cover_url ?? ""}
+                            totalPages={book.total_pages ?? 0}
+                            pagesRead={book.pages_read ?? 0}
+                            friendsReading={book.friends_reading ?? 0}
+                            openLibraryUrl={book.open_library_url}
+                            status={book.status}
+                          />
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </>
           )}
         </section>
       </div>

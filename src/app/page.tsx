@@ -7,7 +7,7 @@ export default async function Home() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
-  let library: Array<{
+  type LibraryEntry = {
     id: string;
     title: string;
     author: string;
@@ -16,16 +16,19 @@ export default async function Home() {
     pagesRead: number;
     friendsReading: number;
     openLibraryUrl: string | null;
-  }> = [];
+    status: "reading" | "completed";
+  };
+
+  let inProgress: LibraryEntry[] = [];
 
   if (user) {
     const { data } = await supabase
       .from("library_entries")
-      .select("id, title, author, cover_url, total_pages, pages_read, friends_reading, open_library_url")
+      .select("id, title, author, cover_url, total_pages, pages_read, friends_reading, open_library_url, status")
       .eq("user_id", user.id)
       .order("position", { ascending: true });
 
-    library =
+    const entries: LibraryEntry[] =
       data?.map((row) => ({
         id: row.id,
         title: row.title,
@@ -35,7 +38,10 @@ export default async function Home() {
         pagesRead: row.pages_read ?? 0,
         friendsReading: row.friends_reading ?? 0,
         openLibraryUrl: row.open_library_url,
+        status: (row.status as "reading" | "completed") ?? "reading",
       })) ?? [];
+
+    inProgress = entries.filter((e) => e.status !== "completed");
   }
 
   return (
@@ -65,26 +71,32 @@ export default async function Home() {
           <p className="py-12 text-center text-stone-500">
             Sign in to view your library.
           </p>
-        ) : library.length === 0 ? ( // no books in library
+        ) : inProgress.length === 0 ? ( // no books in library
           <p className="py-12 text-center text-stone-500">
             Your library is empty. Add books to get started.
           </p>
         ) : ( // books in library
-          <ul className="flex flex-col gap-4" role="list">
-            {library.map((book) => (
-              <li key={book.id}>
-                <BookCard
-                  title={book.title}
-                  author={book.author}
-                  coverUrl={book.coverUrl ?? ""}
-                  totalPages={book.totalPages}
-                  pagesRead={book.pagesRead}
-                  friendsReading={book.friendsReading}
-                  openLibraryUrl={book.openLibraryUrl}
-                />
-              </li>
-            ))}
-          </ul>
+          <section>
+            <h2 className="mb-4 text-xs font-semibold uppercase tracking-wider text-stone-600">
+              In Progress
+            </h2>
+            <ul className="flex flex-col gap-4" role="list">
+              {inProgress.map((book) => (
+                <li key={book.id}>
+                  <BookCard
+                    title={book.title}
+                    author={book.author}
+                    coverUrl={book.coverUrl ?? ""}
+                    totalPages={book.totalPages}
+                    pagesRead={book.pagesRead}
+                    friendsReading={book.friendsReading}
+                    openLibraryUrl={book.openLibraryUrl}
+                    status={book.status}
+                  />
+                </li>
+              ))}
+            </ul>
+          </section>
         )}
       </div>
     </main>
