@@ -1,52 +1,92 @@
 import { createClient } from "@/lib/supabase/server";
 import Link from "next/link";
-import { CurrentBook } from "@/components/current-book";
+import { BookCard } from "@/components/book-card";
+import { NavDrawer } from "@/components/nav-drawer";
 
 export default async function Home() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
+  let library: Array<{
+    id: string;
+    title: string;
+    author: string;
+    coverUrl: string | null;
+    totalPages: number;
+    pagesRead: number;
+    friendsReading: number;
+    openLibraryUrl: string | null;
+  }> = [];
+
+  if (user) {
+    const { data } = await supabase
+      .from("library_entries")
+      .select("id, title, author, cover_url, total_pages, pages_read, friends_reading, open_library_url")
+      .eq("user_id", user.id)
+      .order("position", { ascending: true });
+
+    library =
+      data?.map((row) => ({
+        id: row.id,
+        title: row.title,
+        author: row.author,
+        coverUrl: row.cover_url,
+        totalPages: row.total_pages ?? 0,
+        pagesRead: row.pages_read ?? 0,
+        friendsReading: row.friends_reading ?? 0,
+        openLibraryUrl: row.open_library_url,
+      })) ?? [];
+  }
+
   return (
-    <main className="min-h-screen bg-stone-50">
-      <header className="flex items-center justify-between border-b border-stone-200 bg-white/80 px-4 py-3 backdrop-blur sm:px-6">
-        <h1 className="text-xl font-bold text-stone-900">Booknook</h1>
+    <main className="min-h-screen bg-stone-50/95">
+      <NavDrawer title="My Library">
         {user ? (
-          <div className="flex items-center gap-3">
-            <span className="hidden text-sm text-stone-600 sm:inline">
-              {user.email}
-            </span>
-            <form action="/auth/signout" method="POST">
-              <SignOutButton />
-            </form>
-          </div>
+          <form action="/auth/signout" method="POST">
+            <button
+              type="submit"
+              className="rounded-lg border border-stone-300 px-3 py-1.5 text-sm font-medium text-stone-700 hover:bg-stone-100 active:bg-stone-200"
+            >
+              Sign out
+            </button>
+          </form>
         ) : (
           <Link
             href="/login"
-            className="rounded-lg bg-amber-600 px-4 py-2 text-sm font-medium text-white hover:bg-amber-700"
+            className="rounded-lg bg-amber-700 px-3 py-1.5 text-sm font-medium text-white hover:bg-amber-800 active:bg-amber-900"
           >
             Sign in
           </Link>
         )}
-      </header>
-      <div className="mx-auto max-w-2xl px-4 py-12 sm:px-6">
-        <h2 className="mb-8 text-center text-2xl font-semibold text-stone-800 sm:text-3xl">
-          Your current read
-        </h2>
-        <div className="flex justify-center">
-          <CurrentBook />
-        </div>
+      </NavDrawer>
+
+      <div className="mx-auto max-w-xl px-4 py-6 pb-[max(2rem,env(safe-area-inset-bottom))]">
+        {!user ? ( // not logged in
+          <p className="py-12 text-center text-stone-500">
+            Sign in to view your library.
+          </p>
+        ) : library.length === 0 ? ( // no books in library
+          <p className="py-12 text-center text-stone-500">
+            Your library is empty. Add books to get started.
+          </p>
+        ) : ( // books in library
+          <ul className="flex flex-col gap-4" role="list">
+            {library.map((book) => (
+              <li key={book.id}>
+                <BookCard
+                  title={book.title}
+                  author={book.author}
+                  coverUrl={book.coverUrl ?? ""}
+                  totalPages={book.totalPages}
+                  pagesRead={book.pagesRead}
+                  friendsReading={book.friendsReading}
+                  openLibraryUrl={book.openLibraryUrl}
+                />
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </main>
-  );
-}
-
-function SignOutButton() {
-  return (
-    <button
-      type="submit"
-      className="rounded-lg border border-stone-300 px-4 py-2 text-sm font-medium text-stone-700 hover:bg-stone-100"
-    >
-      Sign out
-    </button>
   );
 }

@@ -1,38 +1,47 @@
 import { expect, test } from "@playwright/test";
 
-const TEST_USER = {
-  email: "a@test.com",
-  password: "Welcome1!",
-};
+const USER_A = { email: "a@test.com", password: "Welcome1!" };
+const USER_B = { email: "b@test.com", password: "Welcome1!" };
 
 function getSubmitButton(page: import("@playwright/test").Page) {
   return page.locator('form button[type="submit"]');
 }
 
 test.describe("Auth", () => {
-  test("login with seeded user redirects to home and shows user email", async ({
-    page,
-  }) => {
+  test("a@test.com sees seeded library after login", async ({ page }) => {
     await page.goto("/login");
 
-    await page.getByLabel("Email").fill(TEST_USER.email);
-    await page.getByLabel("Password").fill(TEST_USER.password);
+    await page.getByLabel("Email").fill(USER_A.email);
+    await page.getByLabel("Password").fill(USER_A.password);
     await getSubmitButton(page).click();
 
     await expect(page).toHaveURL("/", { timeout: 15_000 });
-    await expect(page.getByText(/Signed in as/)).toBeVisible();
-    await expect(page.getByText(TEST_USER.email)).toBeVisible();
+    await expect(page.getByRole("button", { name: "Sign out" })).toBeVisible();
+    await expect(page.getByText("The Lord of the Rings")).toBeVisible();
+    await expect(page.getByText("Fourth Wing")).toBeVisible();
+  });
+
+  test("b@test.com sees empty library after login", async ({ page }) => {
+    await page.goto("/login");
+
+    await page.getByLabel("Email").fill(USER_B.email);
+    await page.getByLabel("Password").fill(USER_B.password);
+    await getSubmitButton(page).click();
+
+    await expect(page).toHaveURL("/", { timeout: 15_000 });
+    await expect(page.getByRole("button", { name: "Sign out" })).toBeVisible();
+    await expect(page.getByText("Your library is empty. Add books to get started.")).toBeVisible();
   });
 
   test("sign out returns to unauthenticated state", async ({ page }) => {
     await page.goto("/login");
 
-    await page.getByLabel("Email").fill(TEST_USER.email);
-    await page.getByLabel("Password").fill(TEST_USER.password);
+    await page.getByLabel("Email").fill(USER_A.email);
+    await page.getByLabel("Password").fill(USER_A.password);
     await getSubmitButton(page).click();
 
     await expect(page).toHaveURL("/", { timeout: 15_000 });
-    await expect(page.getByText(/Signed in as/)).toBeVisible();
+    await expect(page.getByRole("button", { name: "Sign out" })).toBeVisible();
 
     await page.getByRole("button", { name: "Sign out" }).click();
 

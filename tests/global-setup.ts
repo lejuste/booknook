@@ -11,6 +11,14 @@ async function globalSetup() {
   } catch {
     console.warn("Seed script failed or test user already exists, continuing...");
   }
+  try {
+    execSync("npm run seed:library", {
+      cwd: root,
+      stdio: "inherit",
+    });
+  } catch {
+    console.warn("Library seed failed, continuing...");
+  }
 }
 
 export default globalSetup;

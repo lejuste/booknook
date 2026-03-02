@@ -27,7 +27,9 @@ Run the full stack locally: Next.js + local Supabase (PostgreSQL, Auth, Storage,
    NEXT_PUBLIC_SUPABASE_ANON_KEY=<local_anon_key>
    ```
 
-   The local anon key is printed when you run `supabase start`, or view it in [Supabase Studio](http://127.0.0.1:54323).
+   The local anon key is printed when you run `supabase start`, or view it in [Supabase Studio](http://127.0.0.1:54323). Add `SUPABASE_SERVICE_ROLE_KEY` for seed scripts.
+
+   After adding new migrations, run `supabase db reset` to apply them to the local database.
 
 3. **Run the Next.js dev server**:
 
@@ -79,6 +81,8 @@ Run the app against your hosted Supabase project.
 | `npm run supabase:db:diff` | Generate migration from schema diff |
 | `npm run supabase:db:push` | Push migrations to remote |
 | `npm run seed:test-users` | Create test user for integration tests |
+| `npm run seed:library` | Seed sample library books (current reads) |
+| `npm run seed:past-reads` | Seed Scythe & Bible as completed books + profile demo data |
 | `npm run test` | Run auth integration tests (Playwright) |
 | `npm run test:ui` | Run tests with Playwright UI |
 
@@ -107,3 +111,25 @@ Integration tests cover login, sign out, and invalid credentials. They use a see
    ```bash
    npm run test
    ```
+
+## Seeding data
+
+1. **Test users** (required for tests and seed scripts):
+
+   ```bash
+   npm run seed:test-users
+   ```
+
+2. **Library books** (sample current reads):
+
+   ```bash
+   npm run seed:library
+   ```
+
+3. **Past read books** (Scythe, The Holy Bible) + profile demo:
+
+   ```bash
+   npm run seed:past-reads
+   ```
+
+   Requires the `status` column on `library_entries` and `tagline` on `profiles`. If using **local** Supabase, run `supabase db reset` after adding new migrations. If using **remote**, run `npm run supabase:db:push`.
