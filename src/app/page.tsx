@@ -4,8 +4,12 @@ import { BookCard } from "@/components/book-card";
 import { NavDrawer } from "@/components/nav-drawer";
 import { AddBookButton } from "@/components/add-book-button";
 
+export const dynamic = "force-dynamic";
+
 export default async function Home() {
   const supabase = await createClient();
+  // Load session from cookies so RLS has auth.uid() for the library query
+  await supabase.auth.getSession();
   const { data: { user } } = await supabase.auth.getUser();
 
   type LibraryEntry = {
@@ -23,11 +27,15 @@ export default async function Home() {
   let inProgress: LibraryEntry[] = [];
 
   if (user) {
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from("library_entries")
       .select("id, title, author, cover_url, total_pages, pages_read, friends_reading, open_library_url, status")
       .eq("user_id", user.id)
       .order("position", { ascending: true });
+
+    if (error) {
+      console.error("[Library] Failed to load library_entries:", error.message, error.code);
+    }
 
     const entries: LibraryEntry[] =
       data?.map((row) => ({
@@ -77,6 +85,9 @@ export default async function Home() {
             <p className="mb-4 text-stone-500">
               Your library is empty. Add books to get started.
             </p>
+            <p className="mb-4 text-xs text-stone-400">
+              Using seeded data? Sign in as a@test.com (password: Welcome1!) to see the demo library.
+            </p>
             <AddBookButton />
           </div>
         ) : ( // books in library
@@ -91,6 +102,7 @@ export default async function Home() {
               {inProgress.map((book) => (
                 <li key={book.id}>
                   <BookCard
+                    id={book.id}
                     title={book.title}
                     author={book.author}
                     coverUrl={book.coverUrl ?? ""}

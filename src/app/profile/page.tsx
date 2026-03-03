@@ -142,6 +142,7 @@ export default async function ProfilePage() {
                       <li key={book.id}>
                         <div className="rounded-2xl bg-white p-4 shadow-sm">
                           <BookCard
+                            id={book.id}
                             title={book.title}
                             author={book.author}
                             coverUrl={book.cover_url ?? ""}
@@ -167,6 +168,7 @@ export default async function ProfilePage() {
                       <li key={book.id}>
                         <div className="rounded-2xl bg-white p-4 shadow-sm">
                           <BookCard
+                            id={book.id}
                             title={book.title}
                             author={book.author}
                             coverUrl={book.cover_url ?? ""}

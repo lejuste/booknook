@@ -215,6 +215,52 @@ async function main() {
     if (title) console.log("  Seeded (completed):", title);
   }
 
+  // 6. User B: same first book (for "friends reading" on timeline)
+  const userB = users?.find((u) => u.email === "b@test.com");
+  const firstWorkId = LIBRARY_BOOKS[0].workId;
+  if (userB) {
+    await supabase
+      .from("profiles")
+      .update({
+        full_name: "Blake Chen",
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", userB.id);
+
+    const title = await seedLibraryEntry(supabase, userB.id, {
+      workId: firstWorkId,
+      editionId: LIBRARY_BOOKS[0].editionId,
+      pagesRead: 120,
+      position: 0,
+    });
+    if (title) console.log("  Seeded for user B (friend):", title);
+
+    // Update friends_reading on both users' entries for this work
+    await supabase
+      .from("library_entries")
+      .update({ friends_reading: 1 })
+      .eq("open_library_work_id", firstWorkId);
+  }
+
+  // 7. Marginalia (comments) on first book - only visible after you pass that page
+  if (userB) {
+    const marginaliaRows = [
+      { open_library_work_id: firstWorkId, user_id: userId, page_number: 78, body: "This foreshadowing is so subtle. I love how the author plants these seeds early." },
+      { open_library_work_id: firstWorkId, user_id: userB.id, page_number: 95, body: "The dialogue here really crackles." },
+      { open_library_work_id: firstWorkId, user_id: userId, page_number: 134, body: "Had to re-read this paragraph three times—so dense and rewarding." },
+      { open_library_work_id: firstWorkId, user_id: userB.id, page_number: 156, body: "That twist! Did not see it coming." },
+    ];
+    for (const row of marginaliaRows) {
+      const { error } = await supabase.from("marginalia").insert(row);
+      if (error) {
+        // Table may not exist yet (migration not applied)
+        if (error.code !== "42P01") console.warn("Marginalia seed:", error.message);
+        break;
+      }
+    }
+    console.log("  Seeded marginalia for first book.");
+  }
+
   console.log("Seed complete.");
 }
 
