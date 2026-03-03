@@ -9,7 +9,7 @@
  */
 
 import { config } from "dotenv";
-import { createClient } from "@supabase/supabase-js";
+import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
 config({ path: ".env.local" });
 
@@ -48,7 +48,7 @@ async function fetchJson<T>(url: string): Promise<T> {
   return res.json();
 }
 
-async function seedTestUsers(supabase: ReturnType<typeof createClient>) {
+async function seedTestUsers(supabase: SupabaseClient) {
   for (const user of TEST_USERS) {
     const { error } = await supabase.auth.admin.createUser({
       email: user.email,
@@ -74,7 +74,7 @@ async function seedTestUsers(supabase: ReturnType<typeof createClient>) {
 }
 
 async function seedLibraryEntry(
-  supabase: ReturnType<typeof createClient>,
+  supabase: SupabaseClient,
   userId: string,
   book: {
     workId: string;
@@ -119,7 +119,7 @@ async function seedLibraryEntry(
   const coverUrl = `https://covers.openlibrary.org/b/olid/${book.editionId}-M.jpg`;
   const openLibraryUrl = `https://openlibrary.org/works/${book.workId}?edition=key%3A/books/${book.editionId}`;
 
-  const entry: Record<string, unknown> = {
+  const entry = {
     user_id: userId,
     open_library_work_id: book.workId,
     open_library_edition_id: book.editionId,
@@ -131,10 +131,10 @@ async function seedLibraryEntry(
     pages_read: pagesRead,
     friends_reading: 0,
     position: book.position,
+    ...(book.status && { status: book.status }),
   };
-  if (book.status) entry.status = book.status;
 
-  const { error } = await supabase.from("library_entries").upsert(entry, {
+  const { error } = await supabase.from("library_entries").upsert(entry as never, {
     onConflict: "user_id,open_library_work_id",
   });
 
