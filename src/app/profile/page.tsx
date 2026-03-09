@@ -149,8 +149,6 @@ export default async function ProfilePage() {
                             totalPages={book.total_pages ?? 0}
                             pagesRead={book.pages_read ?? 0}
                             friendsReading={book.friends_reading ?? 0}
-                            openLibraryUrl={book.open_library_url}
-                            status={book.status}
                           />
                         </div>
                       </li>
@@ -175,8 +173,6 @@ export default async function ProfilePage() {
                             totalPages={book.total_pages ?? 0}
                             pagesRead={book.pages_read ?? 0}
                             friendsReading={book.friends_reading ?? 0}
-                            openLibraryUrl={book.open_library_url}
-                            status={book.status}
                           />
                         </div>
                       </li>

@@ -1,13 +1,5 @@
 "use client";
 
-function SpeechIcon() {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 shrink-0 text-stone-500" aria-hidden>
-      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-    </svg>
-  );
-}
-
 function formatTimeAgo(iso: string): string {
   const d = new Date(iso);
   const now = new Date();
@@ -136,38 +128,34 @@ export function BookTimeline({
           if (node.type === "marginalia") {
             const { item } = node;
             return (
-              <li key={item.id} className="flex gap-4 py-3">
-                <div className="flex w-10 shrink-0 flex-col items-center gap-1">
-                  <div className="h-3 w-3 rounded-full border-2 border-amber-300 bg-stone-50" aria-hidden />
-                  <div className="h-10 w-10 overflow-hidden rounded-full bg-stone-300 ring-2 ring-white">
-                    {item.authorAvatarUrl ? (
-                      /* eslint-disable-next-line @next/next/no-img-element */
-                      <img
-                        src={item.authorAvatarUrl}
-                        alt=""
-                        className="h-full w-full object-cover"
-                      />
-                    ) : (
-                      <span className="flex h-full w-full items-center justify-center text-sm font-medium text-stone-500">
-                        {item.authorName.charAt(0).toUpperCase()}
-                      </span>
-                    )}
-                  </div>
+              <li key={item.id} className="flex items-center gap-4 py-3">
+                <div className="flex h-8 w-10 shrink-0 items-center justify-center">
+                  <span className="text-xs font-medium text-stone-400">
+                    {item.pageNumber}
+                  </span>
                 </div>
+                <div className="h-px w-6 shrink-0 bg-stone-200/60" aria-hidden />
                 <div className="min-w-0 flex-1 rounded-xl bg-white p-4 shadow-sm ring-1 ring-stone-200/80">
                   <div className="mb-1 flex flex-wrap items-center gap-2">
-                    <span className="font-medium text-stone-900">
-                      {item.authorName}
-                    </span>
-                    <span className="text-xs text-stone-500">
-                      p.{item.pageNumber}
-                    </span>
+                    <div className="h-6 w-6 overflow-hidden rounded-full bg-stone-200 ring-1 ring-stone-200/80">
+                      {item.authorAvatarUrl ? (
+                        /* eslint-disable-next-line @next/next/no-img-element */
+                        <img
+                          src={item.authorAvatarUrl}
+                          alt=""
+                          className="h-full w-full object-cover"
+                        />
+                      ) : (
+                        <span className="flex h-full w-full items-center justify-center text-xs font-medium text-stone-500" title={item.authorName}>
+                          {item.authorName.charAt(0).toUpperCase()}
+                        </span>
+                      )}
+                    </div>
                     <span className="text-xs text-stone-400">
                       {formatTimeAgo(item.createdAt)}
                     </span>
                   </div>
-                  <p className="flex gap-2 text-sm leading-relaxed text-stone-700">
-                    <SpeechIcon />
+                  <p className="text-sm leading-relaxed text-stone-700">
                     <span className="italic">{item.body}</span>
                   </p>
                 </div>
@@ -188,9 +176,6 @@ export function BookTimeline({
                   <span className="rounded-md bg-amber-100 px-2.5 py-1 text-xs font-medium text-amber-900">
                     You&apos;re here
                   </span>
-                  <span className="ml-2 text-xs text-stone-500">
-                    Page {node.page}
-                  </span>
                 </div>
               </li>
             );
@@ -201,12 +186,17 @@ export function BookTimeline({
           return (
             <li
               key={`friend-${friend.userId}`}
-              className="flex gap-4 py-2"
+              className="flex items-center gap-4 py-2"
             >
-              <div className="flex w-10 shrink-0 flex-col items-center gap-1">
-                <div className="h-3 w-3 rounded-full border-2 border-stone-300 bg-stone-100" aria-hidden />
+              <div className="flex h-8 w-10 shrink-0 items-center justify-center">
+                <span className="text-xs font-medium text-stone-400">
+                  {friend.pagesRead}
+                </span>
+              </div>
+              <div className="h-px w-6 shrink-0 bg-stone-200/60" aria-hidden />
+              <div className="flex flex-1 items-center">
                 <div
-                  className="h-8 w-8 overflow-hidden rounded-full bg-stone-300 ring-2 ring-white"
+                  className="h-8 w-8 overflow-hidden rounded-full bg-stone-200 ring-2 ring-white"
                   title={`${friend.displayName} – p.${friend.pagesRead}`}
                 >
                   {friend.avatarUrl ? (
@@ -222,10 +212,6 @@ export function BookTimeline({
                     </span>
                   )}
                 </div>
-              </div>
-              <div className="flex flex-1 items-center text-xs text-stone-500">
-                <span className="font-medium text-stone-600">{friend.displayName}</span>
-                <span className="ml-2">p.{friend.pagesRead}</span>
               </div>
             </li>
           );

@@ -11,8 +11,6 @@ type BookCardProps = {
   totalPages: number;
   pagesRead?: number;
   friendsReading: number;
-  openLibraryUrl?: string | null;
-  status?: "reading" | "completed";
 };
 
 function BookmarkIcon() {
@@ -62,8 +60,6 @@ export function BookCard({
   totalPages,
   pagesRead = 0,
   friendsReading,
-  openLibraryUrl,
-  status,
 }: BookCardProps) {
   const [coverError, setCoverError] = useState(false);
   const progress = totalPages > 0 ? Math.round((pagesRead / totalPages) * 100) : 0;
@@ -89,17 +85,6 @@ export function BookCard({
         </div>
         <div className="min-w-0 flex-1">
           <h3 className="font-bold text-stone-900 line-clamp-2">{title}</h3>
-          {status && (
-            <span
-              className={`mt-1.5 inline-block rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                status === "completed"
-                  ? "bg-amber-100 text-amber-800"
-                  : "bg-stone-200 text-stone-700"
-              }`}
-            >
-              {status === "completed" ? "Completed" : "Reading"}
-            </span>
-          )}
           <p className="mt-0.5 text-sm text-stone-600">{author}</p>
 
           <div className="mt-3">
@@ -134,16 +119,6 @@ export function BookCard({
           </div>
         </div>
       </Link>
-      {openLibraryUrl && (
-        <a
-          href={openLibraryUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mt-2 block text-xs text-amber-700 hover:underline"
-        >
-          View on Open Library →
-        </a>
-      )}
     </article>
   );
 }

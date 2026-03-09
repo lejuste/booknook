@@ -93,9 +93,6 @@ export default async function Home() {
         ) : ( // books in library
           <section>
             <div className="mb-4 flex items-center justify-between gap-4">
-              <h2 className="text-xs font-semibold uppercase tracking-wider text-stone-600">
-                In Progress
-              </h2>
               <AddBookButton />
             </div>
             <ul className="flex flex-col gap-4" role="list">
@@ -109,8 +106,6 @@ export default async function Home() {
                     totalPages={book.totalPages}
                     pagesRead={book.pagesRead}
                     friendsReading={book.friendsReading}
-                    openLibraryUrl={book.openLibraryUrl}
-                    status={book.status}
                   />
                 </li>
               ))}
