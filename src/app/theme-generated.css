@@ -1,0 +1,11 @@
+/* Auto-generated from src/lib/color-scheme.ts - do not edit manually */
+:root {
+  --scheme-bg: #D3D3FF;
+  --scheme-bg-muted: #D8BFD8;
+  --scheme-primary: #6B00A0;
+  --scheme-primary-hover: #9400D3;
+  --scheme-border: #D8BFD8;
+  --scheme-accent: #ED80E9;
+  --scheme-accent-soft: #D8BFD8;
+  --scheme-text-on-primary: #FFFFFF;
+}

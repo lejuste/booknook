@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { NavDrawer } from "@/components/nav-drawer";
 import { BookCard } from "@/components/book-card";
+import { BackButton } from "./back-button";
 
 export default async function ProfilePage() {
   const supabase = await createClient();
@@ -30,19 +31,13 @@ export default async function ProfilePage() {
   const recentCompleted = entries.filter((e) => e.status === "completed").slice(0, 6);
 
   return (
-    <main className="min-h-screen bg-stone-50/95">
-      <NavDrawer title="Profile">
-        <form action="/auth/signout" method="POST">
-          <button
-            type="submit"
-            className="rounded-lg border border-stone-300 px-3 py-1.5 text-sm font-medium text-stone-700 hover:bg-stone-100 active:bg-stone-200"
-          >
-            Sign out
-          </button>
-        </form>
-      </NavDrawer>
+    <main className="min-h-screen bg-scheme-bg-muted/95">
+      <NavDrawer title="Profile" />
 
       <div className="mx-auto max-w-xl px-4 py-6 pb-[max(2rem,env(safe-area-inset-bottom))]">
+        <div className="mb-6">
+          <BackButton />
+        </div>
         {/* Profile section */}
         <section className="mb-8 flex flex-col gap-4 rounded-2xl bg-white p-6 shadow-sm">
           <div className="flex items-start gap-4">
@@ -67,12 +62,22 @@ export default async function ProfilePage() {
               <p className="mt-0.5 text-sm text-stone-600">
                 {profile?.tagline ?? "Avid reader & note-taker"}
               </p>
-              <Link
-                href="/profile/edit"
-                className="mt-3 inline-block rounded-xl bg-amber-800 px-4 py-2.5 text-sm font-medium text-white hover:bg-amber-900 active:bg-amber-950"
-              >
-                Edit Profile
-              </Link>
+              <div className="mt-3 flex flex-wrap items-center gap-3">
+                <Link
+                  href="/profile/edit"
+                  className="inline-block rounded-xl bg-scheme-primary px-4 py-2.5 text-sm font-medium text-white hover:bg-scheme-primary-hover active:bg-scheme-primary-hover/90"
+                >
+                  Edit Profile
+                </Link>
+                <form action="/auth/signout" method="POST" className="inline-block">
+                  <button
+                    type="submit"
+                    className="rounded-lg border border-stone-300 px-4 py-2.5 text-sm font-medium text-stone-700 hover:bg-stone-100 active:bg-stone-200"
+                  >
+                    Sign out
+                  </button>
+                </form>
+              </div>
             </div>
           </div>
         </section>
@@ -112,7 +117,7 @@ export default async function ProfilePage() {
             <div className="mt-3">
               <div className="h-2 w-full overflow-hidden rounded-full bg-stone-200">
                 <div
-                  className="h-full rounded-full bg-amber-600 transition-all"
+                  className="h-full rounded-full bg-scheme-primary transition-all"
                   style={{ width: "0%" }}
                 />
               </div>

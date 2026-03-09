@@ -1,1 +1,14 @@
 @import "tailwindcss";
+@import "./theme-generated.css";
+
+@theme {
+  /* Semantic theme colors - values from theme-generated.css (see src/lib/color-scheme.ts) */
+  --color-scheme-bg: var(--scheme-bg);
+  --color-scheme-bg-muted: var(--scheme-bg-muted);
+  --color-scheme-primary: var(--scheme-primary);
+  --color-scheme-primary-hover: var(--scheme-primary-hover);
+  --color-scheme-border: var(--scheme-border);
+  --color-scheme-accent: var(--scheme-accent);
+  --color-scheme-accent-soft: var(--scheme-accent-soft);
+  --color-scheme-text-on-primary: var(--scheme-text-on-primary);
+}

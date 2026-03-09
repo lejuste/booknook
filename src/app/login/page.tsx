@@ -47,8 +47,8 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-stone-50">
-      <div className="w-full max-w-sm rounded-xl border border-stone-200 bg-white p-8 shadow-sm">
+    <main className="min-h-screen flex items-center justify-center bg-scheme-bg-muted/95">
+      <div className="w-full max-w-sm rounded-xl border border-scheme-border/60 bg-white p-8 shadow-sm">
         <h1 className="mb-6 text-2xl font-bold text-stone-900">
           {isSignUp ? "Create account" : "Sign in"}
         </h1>
@@ -63,7 +63,7 @@ export default function LoginPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full rounded-lg border border-stone-300 px-3 py-2 text-stone-900 placeholder-stone-400 focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500"
+              className="w-full rounded-lg border border-stone-300 px-3 py-2 text-stone-900 placeholder-stone-400 focus:border-scheme-primary focus:outline-none focus:ring-1 focus:ring-scheme-primary"
               placeholder="you@example.com"
             />
           </div>
@@ -78,7 +78,7 @@ export default function LoginPage() {
               onChange={(e) => setPassword(e.target.value)}
               required
               minLength={6}
-              className="w-full rounded-lg border border-stone-300 px-3 py-2 text-stone-900 placeholder-stone-400 focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500"
+              className="w-full rounded-lg border border-stone-300 px-3 py-2 text-stone-900 placeholder-stone-400 focus:border-scheme-primary focus:outline-none focus:ring-1 focus:ring-scheme-primary"
               placeholder="••••••••"
             />
           </div>
@@ -92,7 +92,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-lg bg-amber-600 px-4 py-2 font-medium text-white hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 disabled:opacity-50"
+            className="w-full rounded-lg bg-scheme-primary px-4 py-2 font-medium text-white hover:bg-scheme-primary-hover focus:outline-none focus:ring-2 focus:ring-scheme-primary focus:ring-offset-2 disabled:opacity-50"
           >
             {loading ? "Loading…" : isSignUp ? "Sign up" : "Sign in"}
           </button>
@@ -105,7 +105,7 @@ export default function LoginPage() {
               setIsSignUp(!isSignUp);
               setMessage(null);
             }}
-            className="font-medium text-amber-600 hover:text-amber-700"
+            className="font-medium text-scheme-primary hover:text-scheme-primary-hover"
           >
             {isSignUp ? "Sign in" : "Sign up"}
           </button>

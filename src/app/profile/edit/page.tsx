@@ -12,7 +12,7 @@ export default async function EditProfilePage() {
   }
 
   return (
-    <main className="min-h-screen bg-stone-50/95">
+    <main className="min-h-screen bg-scheme-bg-muted/95">
       <NavDrawer title="Edit Profile">
         <Link
           href="/profile"
@@ -29,7 +29,7 @@ export default async function EditProfilePage() {
         <div className="mt-4 text-center">
           <Link
             href="/profile"
-            className="text-amber-800 hover:underline"
+            className="text-scheme-primary hover:underline"
           >
             ← Back to Profile
           </Link>

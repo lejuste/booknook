@@ -155,10 +155,10 @@ export function AddBookModal({ isOpen, onClose }: AddBookModalProps) {
       aria-labelledby="add-book-title"
     >
       <div
-        className="w-full max-w-lg max-h-[90vh] overflow-hidden rounded-2xl bg-stone-50 shadow-xl flex flex-col"
+        className="w-full max-w-lg max-h-[90vh] overflow-hidden rounded-2xl bg-scheme-bg/50 shadow-xl flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center justify-between border-b border-stone-200 px-4 py-3">
+        <div className="flex items-center justify-between border-b border-scheme-border/50 px-4 py-3">
           <h2 id="add-book-title" className="text-lg font-semibold text-stone-900">
             {selectedBook ? "Add book" : "Search for a book"}
           </h2>
@@ -207,7 +207,7 @@ export function AddBookModal({ isOpen, onClose }: AddBookModalProps) {
                   max={selectedBook.totalPages || 99999}
                   value={pageInput}
                   onChange={(e) => setPageInput(e.target.value)}
-                  className="mt-1.5 w-full rounded-lg border border-stone-300 px-3 py-2 text-stone-900 focus:border-amber-600 focus:outline-none focus:ring-1 focus:ring-amber-600"
+                  className="mt-1.5 w-full rounded-lg border border-stone-300 px-3 py-2 text-stone-900 focus:border-scheme-primary focus:outline-none focus:ring-1 focus:ring-scheme-primary"
                   placeholder="e.g. 42"
                 />
               </div>
@@ -226,13 +226,13 @@ export function AddBookModal({ isOpen, onClose }: AddBookModalProps) {
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                     placeholder="Search by title, author..."
-                    className="flex-1 rounded-lg border border-stone-300 px-3 py-2 text-stone-900 placeholder:text-stone-400 focus:border-amber-600 focus:outline-none focus:ring-1 focus:ring-amber-600"
+                    className="flex-1 rounded-lg border border-stone-300 px-3 py-2 text-stone-900 placeholder:text-stone-400 focus:border-scheme-primary focus:outline-none focus:ring-1 focus:ring-scheme-primary"
                     autoFocus
                   />
                   <button
                     type="submit"
                     disabled={loading}
-                    className="rounded-lg bg-amber-700 px-4 py-2 text-sm font-medium text-white hover:bg-amber-800 disabled:opacity-60"
+                    className="rounded-lg bg-scheme-primary px-4 py-2 text-sm font-medium text-white hover:bg-scheme-primary-hover disabled:opacity-60"
                   >
                     {loading ? "Searching…" : "Search"}
                   </button>
@@ -260,7 +260,7 @@ export function AddBookModal({ isOpen, onClose }: AddBookModalProps) {
                       <button
                         type="button"
                         onClick={() => handleSelectBook(book)}
-                        className="flex w-full gap-3 rounded-lg border border-stone-200 bg-white p-3 text-left hover:border-amber-300 hover:bg-amber-50/50"
+                        className="flex w-full gap-3 rounded-lg border border-scheme-border/50 bg-white p-3 text-left hover:border-scheme-border hover:bg-scheme-bg/70"
                       >
                         <div className="h-14 w-10 shrink-0 overflow-hidden rounded bg-stone-200">
                           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -310,7 +310,7 @@ export function AddBookModal({ isOpen, onClose }: AddBookModalProps) {
           )}
         </div>
 
-        <div className="flex justify-end gap-2 border-t border-stone-200 px-4 py-3">
+        <div className="flex justify-end gap-2 border-t border-scheme-border/50 px-4 py-3">
           {selectedBook ? (
             <>
               <button
@@ -324,7 +324,7 @@ export function AddBookModal({ isOpen, onClose }: AddBookModalProps) {
                 type="button"
                 onClick={handleAdd}
                 disabled={adding}
-                className="rounded-lg bg-amber-700 px-4 py-2 text-sm font-medium text-white hover:bg-amber-800 disabled:opacity-60"
+                className="rounded-lg bg-scheme-primary px-4 py-2 text-sm font-medium text-white hover:bg-scheme-primary-hover disabled:opacity-60"
               >
                 {adding ? "Adding…" : "Add to library"}
               </button>

@@ -15,15 +15,15 @@ export function CurrentBook() {
   const book = DEFAULT_BOOK;
 
   return (
-    <div className="w-full max-w-md rounded-2xl border border-amber-200/60 bg-gradient-to-br from-amber-50 to-stone-100 p-6 shadow-lg shadow-amber-900/5">
-      <h2 className="mb-4 text-sm font-semibold uppercase tracking-wider text-amber-800/80">
+    <div className="w-full max-w-md rounded-2xl border border-scheme-border/60 bg-gradient-to-br from-scheme-bg/90 to-scheme-accent/30 p-6 shadow-lg shadow-scheme-primary/10">
+      <h2 className="mb-4 text-sm font-semibold uppercase tracking-wider text-scheme-primary-hover">
         Currently Reading
       </h2>
       <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-start">
         <div className="flex-shrink-0">
-          <div className="h-56 w-36 overflow-hidden rounded-lg shadow-md ring-1 ring-amber-200/50 sm:h-64 sm:w-40">
+          <div className="h-56 w-36 overflow-hidden rounded-lg shadow-md ring-1 ring-scheme-border/50 sm:h-64 sm:w-40">
             {coverError ? (
-              <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-amber-200 to-amber-300 text-4xl text-amber-800/60">
+              <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-scheme-bg to-scheme-border/60 text-4xl text-scheme-primary-hover">
                 📖
               </div>
             ) : (
@@ -50,7 +50,7 @@ export function CurrentBook() {
               >
                 Page {page} of {book.totalPages}
               </label>
-              <span className="rounded-md bg-amber-100 px-2 py-1 text-sm font-medium text-amber-800">
+              <span className="rounded-md bg-scheme-accent-soft/70 px-2 py-1 text-sm font-medium text-scheme-primary-hover">
                 {Math.round((page / book.totalPages) * 100)}%
               </span>
             </div>
@@ -61,7 +61,7 @@ export function CurrentBook() {
               max={book.totalPages}
               value={page}
               onChange={(e) => setPage(Number(e.target.value))}
-              className="h-2 w-full cursor-pointer appearance-none rounded-full bg-stone-200 accent-amber-600"
+              className="h-2 w-full cursor-pointer appearance-none rounded-full bg-stone-200 accent-scheme-primary"
             />
           </div>
         </div>

@@ -13,7 +13,8 @@
     "supabase:start": "supabase start",
     "supabase:stop": "supabase stop",
     "supabase:db:diff": "supabase db diff -f init_schema",
-    "supabase:db:push": "supabase db push"
+    "supabase:db:push": "supabase db push",
+    "theme": "tsx scripts/generate-theme-css.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.8.0",

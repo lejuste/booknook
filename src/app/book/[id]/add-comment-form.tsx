@@ -54,8 +54,8 @@ export function AddCommentForm({
   }
 
   return (
-    <div className="rounded-xl border border-amber-200/80 bg-amber-50/80 p-4 shadow-sm">
-      <h3 className="mb-3 flex items-center gap-2 text-sm font-semibold text-amber-900">
+    <div className="rounded-xl border border-scheme-border/80 bg-scheme-bg/90 p-4 shadow-sm">
+      <h3 className="mb-3 flex items-center gap-2 text-sm font-semibold text-scheme-primary-hover">
         <PencilIcon />
         Add a comment
       </h3>
@@ -68,7 +68,7 @@ export function AddCommentForm({
             id="add-comment-page"
             value={pageNumber}
             onChange={(e) => setPageNumber(Number(e.target.value))}
-            className="w-full max-w-[6rem] rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm text-stone-900 focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500"
+            className="w-full max-w-[6rem] rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm text-stone-900 focus:border-scheme-primary focus:outline-none focus:ring-1 focus:ring-scheme-primary"
             disabled={status === "submitting"}
           >
             {pageOptions.map((p) => (
@@ -89,7 +89,7 @@ export function AddCommentForm({
             placeholder="Your thought on this page..."
             rows={3}
             maxLength={2000}
-            className="w-full resize-y rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm text-stone-900 placeholder:text-stone-400 focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500 disabled:opacity-60"
+            className="w-full resize-y rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm text-stone-900 placeholder:text-stone-400 focus:border-scheme-primary focus:outline-none focus:ring-1 focus:ring-scheme-primary disabled:opacity-60"
             disabled={status === "submitting"}
             required
           />
@@ -100,14 +100,14 @@ export function AddCommentForm({
           </p>
         )}
         {status === "success" && (
-          <p className="text-sm text-amber-800" role="status">
+          <p className="text-sm text-scheme-primary-hover" role="status">
             Comment added.
           </p>
         )}
         <button
           type="submit"
           disabled={status === "submitting" || !body.trim()}
-          className="rounded-lg bg-amber-600 px-4 py-2 text-sm font-medium text-white hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 disabled:opacity-50"
+          className="rounded-lg bg-scheme-primary px-4 py-2 text-sm font-medium text-white hover:bg-scheme-primary-hover focus:outline-none focus:ring-2 focus:ring-scheme-primary focus:ring-offset-2 disabled:opacity-50"
         >
           {status === "submitting" ? "Saving…" : "Save comment"}
         </button>

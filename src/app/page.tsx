@@ -25,8 +25,16 @@ export default async function Home() {
   };
 
   let inProgress: LibraryEntry[] = [];
+  let profile: { avatar_url: string | null; full_name: string | null } | null = null;
 
   if (user) {
+    const { data: profileData } = await supabase
+      .from("profiles")
+      .select("avatar_url, full_name")
+      .eq("id", user.id)
+      .single();
+    profile = profileData ?? null;
+
     const { data, error } = await supabase
       .from("library_entries")
       .select("id, title, author, cover_url, total_pages, pages_read, friends_reading, open_library_url, status")
@@ -54,21 +62,32 @@ export default async function Home() {
   }
 
   return (
-    <main className="min-h-screen bg-stone-50/95">
+    <main className="min-h-screen bg-scheme-bg-muted/95">
       <NavDrawer title="My Library">
         {user ? (
-          <form action="/auth/signout" method="POST">
-            <button
-              type="submit"
-              className="rounded-lg border border-stone-300 px-3 py-1.5 text-sm font-medium text-stone-700 hover:bg-stone-100 active:bg-stone-200"
-            >
-              Sign out
-            </button>
-          </form>
+          <Link
+            href="/profile"
+            className="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full bg-scheme-border/60 ring-1 ring-scheme-border/80 hover:ring-scheme-border"
+            title="Profile"
+            aria-label="Go to profile"
+          >
+            {profile?.avatar_url ? (
+              /* eslint-disable-next-line @next/next/no-img-element */
+              <img
+                src={profile.avatar_url}
+                alt=""
+                className="h-full w-full object-cover"
+              />
+            ) : (
+              <span className="text-sm font-medium text-scheme-primary" aria-hidden>
+                {profile?.full_name?.charAt(0)?.toUpperCase() ?? "?"}
+              </span>
+            )}
+          </Link>
         ) : (
           <Link
             href="/login"
-            className="rounded-lg bg-amber-700 px-3 py-1.5 text-sm font-medium text-white hover:bg-amber-800 active:bg-amber-900"
+            className="rounded-lg bg-scheme-primary px-3 py-1.5 text-sm font-medium text-white hover:bg-scheme-primary-hover active:bg-scheme-primary-hover/90"
           >
             Sign in
           </Link>

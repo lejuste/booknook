@@ -118,8 +118,8 @@ export default async function BookPage({
   const friendsCount = friendsProgress.length;
 
   return (
-    <main className="min-h-screen bg-stone-50/95">
-      <header className="sticky top-0 z-10 border-b border-stone-200/80 bg-stone-50/95 px-4 py-4 backdrop-blur-sm">
+    <main className="min-h-screen bg-scheme-bg-muted/95">
+      <header className="sticky top-0 z-10 border-b border-scheme-border/50 bg-scheme-bg-muted/95 px-4 py-4 backdrop-blur-sm">
         <div className="mx-auto max-w-xl">
           <div className="min-w-0">
             <Link
@@ -140,7 +140,7 @@ export default async function BookPage({
                   {friendsProgress.slice(0, 5).map((friend) => (
                     <span
                       key={friend.userId}
-                      className="inline-flex h-6 w-6 shrink-0 overflow-hidden rounded-full bg-stone-200 ring-2 ring-stone-50/95"
+                      className="inline-flex h-6 w-6 shrink-0 overflow-hidden rounded-full bg-scheme-border/60 ring-2 ring-scheme-bg-muted/95"
                       title={friend.displayName}
                     >
                       {friend.avatarUrl ? (

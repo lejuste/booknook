@@ -103,7 +103,7 @@ export function BookTimeline({
     <div className="relative">
       {/* Vertical timeline line */}
       <div
-        className="absolute left-[19px] top-0 bottom-0 w-px bg-amber-200/80"
+        className="absolute left-[19px] top-0 bottom-0 w-px bg-scheme-border/80"
         aria-hidden
       />
 
@@ -168,12 +168,12 @@ export function BookTimeline({
               <li key="you-here" className="flex gap-4 py-4">
                 <div className="flex w-10 shrink-0 flex-col items-center">
                   <div
-                    className="h-4 w-4 rounded-full bg-amber-700"
+                    className="h-4 w-4 rounded-full bg-scheme-primary"
                     aria-hidden
                   />
                 </div>
                 <div className="flex flex-1 items-center">
-                  <span className="rounded-md bg-amber-100 px-2.5 py-1 text-xs font-medium text-amber-900">
+                  <span className="rounded-md bg-scheme-accent-soft/70 px-2.5 py-1 text-xs font-medium text-scheme-primary-hover">
                     You&apos;re here
                   </span>
                 </div>

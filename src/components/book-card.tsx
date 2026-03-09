@@ -66,7 +66,7 @@ export function BookCard({
   const isNotStarted = pagesRead === 0;
 
   return (
-    <article className="rounded-2xl bg-stone-100/80 p-4 shadow-sm hover:bg-stone-100 transition-colors">
+    <article className="rounded-2xl bg-scheme-bg/80 p-4 shadow-sm hover:bg-scheme-bg transition-colors">
       <Link href={`/book/${id}`} className="flex gap-4">
         <div className="h-28 w-20 shrink-0 overflow-hidden rounded-lg bg-stone-200 sm:h-32 sm:w-24">
           {coverError ? (
@@ -103,7 +103,7 @@ export function BookCard({
                 </div>
                 <div className="h-1.5 w-full overflow-hidden rounded-full bg-stone-200">
                   <div
-                    className="h-full rounded-full bg-amber-800/60 transition-all"
+                    className="h-full rounded-full bg-scheme-primary/70 transition-all"
                     style={{ width: `${progress}%` }}
                   />
                 </div>
